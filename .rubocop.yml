@@ -1,0 +1,26 @@
+AllCops:
+  TargetRubyVersion: 2.6
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: true
+  EnforcedStyle: consistent_comma
+
+Style/Documentation:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
