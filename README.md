@@ -18,7 +18,71 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-TODO: Write usage instructions here
+**Configuration**
+```
+  Nexio.configure do |config|
+    config.api_key = <YOUR_NEXIO_API_KEY>
+  end
+```
+
+**Creating One Time Token**
+```
+@nexio_one_time_token = Nexio::PaymentGateway.create_one_time_token(
+  {
+    "card" => {
+      "cardHolderName" => "Abdul Barek"
+    },
+  "data" => {
+  "currency" => "USD",
+  "customer" => {
+    "customerRef" => 780,
+    "billToAddressOne" => "Main Road",
+    "billToAddressTwo" => "",
+    "billToCity" => "Same City",
+    "billToState" => "FL",
+    "billToPostal" => "84702",
+  }
+}})["token"]
+```
+
+**Update a card**
+```
+ data = {
+    "shouldUpdateCard" => true,
+    "card" => {
+      "expirationYear" => 2036,
+      "cardHolderName" => Abdul Barek,
+      "expirationMonth" => 3
+    },
+    "data" => {
+      "customer" => {
+        "billToAddressOne" => "1234 Anywhere St.",
+        "billToAddressTwo" => "",
+        "billToPostal" => 84072,
+        "billToState" => FL,
+        "billToCity" => "",
+      }
+    },
+  }
+Nexio::PaymentGateway.update_card(<CARD_TOKEN>, data)
+```
+
+**Deleting Cards**
+
+```
+Nexio::PaymentGateway.delete_card([card_token1, card_token2])
+```
+
+**Retrieving details of card**
+```
+Nexio::PaymentGateway.card_token(card_token)
+```
+
+**Charging a card through it's token**
+```
+amount_in_usd = 20.25
+Nexio::PaymentGateway.charge(amount_in_usd,card_token)
+```
 
 ## Development
 

@@ -41,7 +41,6 @@ module Nexio
       url = URI("#{Nexio.configuration.api_server_url}/pay/v3/token")
       @request = Net::HTTP::Post.new(url)
       http, request = configure_https_request(url, @request)
-      #raise Nexio::DEFAULT_CONFIG.merge(config).to_json.inspect
       request.body = Nexio::DEFAULT_CONFIG.merge(config).to_json
       response = http.request(@request)
       JSON.parse(response.read_body)
