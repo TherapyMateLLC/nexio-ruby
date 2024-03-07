@@ -41,6 +41,7 @@ module Nexio
       url = URI("#{Nexio.configuration.api_server_url}/pay/v3/token")
       @request = Net::HTTP::Post.new(url)
       http, request = configure_https_request(url, @request)
+      #raise Nexio::DEFAULT_CONFIG.merge(config).to_json.inspect
       request.body = Nexio::DEFAULT_CONFIG.merge(config).to_json
       response = http.request(@request)
       JSON.parse(response.read_body)
@@ -63,6 +64,33 @@ module Nexio
       url = URI("#{Nexio.configuration.api_server_url}/pay/v3/vault/card/#{token}")
       @request = Net::HTTP::Get.new(url)
       http, request = configure_https_request(url, @request)
+      response = http.request(request)
+      JSON.parse(response.read_body)
+    end
+
+    # Updates cards while accepting card token with new data
+    # data = {
+    #     "shouldUpdateCard" => true,
+    #     "card" => {
+    #       "expirationYear" => 2036,
+    #       "cardHolderName" => Abdul Barek,
+    #       "expirationMonth" => 3
+    #     },
+    #     "data" => {
+    #       "customer" => {
+    #         "billToAddressOne" => "1234 Anywhere St.",
+    #         "billToAddressTwo" => "",
+    #         "billToPostal" => 84072,
+    #         "billToState" => FL,
+    #         "billToCity" => "",
+    #       }
+    #     },
+    #   }
+    def self.update_card(token, data={})
+      url = URI("#{Nexio.configuration.api_server_url}/pay/v3/vault/card/#{token}")
+      @request = Net::HTTP::Put.new(url)
+      http, request = configure_https_request(url, @request)
+      request.body = data.to_json
       response = http.request(request)
       JSON.parse(response.read_body)
     end
