@@ -5,8 +5,8 @@ require_relative "lib/nexio/version"
 Gem::Specification.new do |spec|
   spec.name = "nexio"
   spec.version = Nexio::VERSION
-  spec.authors = ["TherapyMate", "James Carbine"]
-  spec.email = ["jamescarbine@gmail.com"]
+  spec.authors = ["TherapyMate", "James Carbine", "Abdul Barek"]
+  spec.email = ["jamescarbine@gmail.com", "barek2k2@gmail.com"]
 
   spec.summary = "Nexio integration with Ruby on Rails"
   spec.homepage = "https://github.com/TherapyMateLLC/nexio-rails"
@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
-  # spec.add_dependency "example-gem", "~> 1.0"
+   spec.add_dependency "vcr"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
