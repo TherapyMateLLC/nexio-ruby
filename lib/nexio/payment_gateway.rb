@@ -46,6 +46,19 @@ module Nexio
       JSON.parse(response.read_body)
     end
 
+    # {
+    #    "card" => {
+    #      "cardHolderName" => "Abdul Barek",
+    #      "expirationMonth" => "10",
+    #      "expirationYear" => "#{Date.today.year + 10}",
+    #      "encryptedNumber" => "JQ2DIwFqQOCypsOE+3n0Mx6W6das1LrFAQVFR1lBD9KySCbVQXvJoweQ7R3wCv34oK6d8QlYQgsAWpmcROiwe4LowQI3pLfADmGRg4arowdaW8UBcR3gm26tT7KUdG13Y+0aiTKSleSJiRUSm3yU/VrNMe1tblYG+SsmtC8c3PEZkQxkJ216RYCzBkFRku2O7TRvx/GtxGd4VQItIF567VanRmZ8tIUaZGg9ZN6PKzUifRfCCt+2XGY7I1+Z7EOEAX1gQZT86+2vzcdk8MiZtMS4KYs+4kngSxR2EhyJa+3wRQBmkApRt03qCoWJEPIbNYxgwdjapy2oWeI/DrZu6A=="
+    #    },
+    #    "data" => {
+    #      "currency" => "USD"
+    #    },
+    #    "shouldUpdateCard" => true,
+    #    "token" => @nexio_one_time_token
+    # }
     def self.save_card(card={})
       url = URI("#{Nexio.configuration.api_server_url}/pay/v3/saveCard")
       @request = Net::HTTP::Post.new(url)
