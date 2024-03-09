@@ -46,6 +46,15 @@ module Nexio
       JSON.parse(response.read_body)
     end
 
+    def self.save_card(card={})
+      url = URI("#{Nexio.configuration.api_server_url}/pay/v3/saveCard")
+      @request = Net::HTTP::Post.new(url)
+      http, request = configure_https_request(url, @request)
+      request.body = card.to_json
+      response = http.request(@request)
+      JSON.parse(response.read_body)
+    end
+
     # Deletes card tokens, tokens can be an array
     def self.delete_card(card_tokens=[])
       url = URI("#{Nexio.configuration.api_server_url}/pay/v3/deleteToken")
