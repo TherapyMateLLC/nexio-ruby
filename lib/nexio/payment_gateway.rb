@@ -43,7 +43,7 @@ module Nexio
       http, request = configure_https_request(url, @request)
       request.body = Nexio::DEFAULT_CONFIG.merge(config).to_json
       response = http.request(@request)
-      JSON.parse(response.read_body)
+      response_or_raise_error(response)
     end
 
     # {
@@ -65,7 +65,7 @@ module Nexio
       http, request = configure_https_request(url, @request)
       request.body = card.to_json
       response = http.request(@request)
-      JSON.parse(response.read_body)
+      response_or_raise_error(response)
     end
 
     # Deletes card tokens, tokens can be an array
@@ -77,7 +77,7 @@ module Nexio
         "tokens" => card_tokens
       }.to_json
       response = http.request(request)
-      JSON.parse(response.read_body)
+      response_or_raise_error(response)
     end
 
     # Returns details of a card accepting a card token
@@ -86,7 +86,7 @@ module Nexio
       @request = Net::HTTP::Get.new(url)
       http, request = configure_https_request(url, @request)
       response = http.request(request)
-      JSON.parse(response.read_body)
+      response_or_raise_error(response)
     end
 
     # Updates cards while accepting card token with new data
@@ -113,7 +113,7 @@ module Nexio
       http, request = configure_https_request(url, @request)
       request.body = data.to_json
       response = http.request(request)
-      JSON.parse(response.read_body)
+      response_or_raise_error(response)
     end
 
     # Makes a charge of a given card using the associated card token
@@ -139,7 +139,7 @@ module Nexio
         "paymentMethod" => "card"
       }.to_json
       response = http.request(request)
-      JSON.parse(response.read_body)
+      response_or_raise_error(response)
     end
 
     # https configuration using base64 basic auth code
@@ -151,5 +151,14 @@ module Nexio
       request["authorization"] = "Basic #{Nexio.configuration.api_key!}"
       [http, request]
     end
+
+    def self.response_or_raise_error(response)
+      if response.code.to_s == '200'
+        JSON.parse(response.read_body)
+      else
+        raise Nexio::NexioError, response.read_body
+      end
+    end
+
   end
 end
