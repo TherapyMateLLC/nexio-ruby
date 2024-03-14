@@ -106,7 +106,7 @@ Nexio::PaymentGateway.charge(amount_in_usd,card_token)
 **Handling error**
 ```
 begin
-  Nexio::PaymentGateway.charge(10.60,'kola')
+  Nexio::PaymentGateway.charge(10.60,'invalid_card_token')
 rescue Nexio::NexioError => e
   puts e.to_hash
 end
