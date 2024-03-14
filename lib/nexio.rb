@@ -9,6 +9,13 @@ require "nexio/payment_gateway"
 
 module Nexio
   class NexioError < StandardError
+    attr_accessor :errors
+    def initialize(msg = nil)
+      @errors = msg || {}
+    end
+    def to_hash
+      @errors
+    end
   end
 
   def self.configuration
