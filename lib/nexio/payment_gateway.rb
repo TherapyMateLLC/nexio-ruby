@@ -156,7 +156,7 @@ module Nexio
       if response.code.to_s == '200'
         JSON.parse(response.read_body)
       else
-        raise Nexio::NexioError, response.read_body
+        raise Nexio::NexioError, JSON.parse(response.read_body)
       end
     end
 
