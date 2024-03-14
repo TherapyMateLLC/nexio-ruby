@@ -103,6 +103,15 @@ amount_in_usd = 20.25
 Nexio::PaymentGateway.charge(amount_in_usd,card_token)
 ```
 
+**Handling error**
+```
+begin
+  Nexio::PaymentGateway.charge(10.60,'kola')
+rescue Nexio::NexioError => e
+  puts e.to_hash
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
