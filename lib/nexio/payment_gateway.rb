@@ -94,7 +94,7 @@ module Nexio
     #     "shouldUpdateCard" => true,
     #     "card" => {
     #       "expirationYear" => 2036,
-    #       "cardHolderName" => Abdul Barek,
+    #       "cardHolderName" => "Abdul Barek",
     #       "expirationMonth" => 3
     #     },
     #     "data" => {
@@ -156,7 +156,15 @@ module Nexio
       if response.code.to_s == '200'
         JSON.parse(response.read_body)
       else
-        raise Nexio::NexioError, JSON.parse(response.read_body)
+        request_details = {
+          headers: @request.each_header.to_h,
+          url: @request.uri.to_s,
+          method: @request.method,
+          query_string: @request.uri.query,
+          body: @request.body
+        }
+        response_body = JSON.parse(response.read_body) rescue {}
+        raise Nexio::NexioError.new(response_body, request_details)
       end
     end
 
