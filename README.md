@@ -22,8 +22,10 @@ If bundler is not being used to manage dependencies, install the gem by executin
 ```
   Nexio.configure do |config|
     config.api_key = <YOUR_NEXIO_API_KEY>
+    config.environment = "development"
   end
 ```
+Setting `config.environment` to `development` will use sandbox, otherwise it will use live Nexio API.
 
 **Creating One Time Token**
 ```
