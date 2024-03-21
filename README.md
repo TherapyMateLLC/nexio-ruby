@@ -53,7 +53,7 @@ Setting `config.environment` to `development` will use sandbox, otherwise it wil
     "shouldUpdateCard" => true,
     "card" => {
       "expirationYear" => 2036,
-      "cardHolderName" => Abdul Barek,
+      "cardHolderName" => "Abdul Barek",
       "expirationMonth" => 3
     },
     "data" => {
