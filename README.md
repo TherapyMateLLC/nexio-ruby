@@ -99,6 +99,12 @@ amount_in_usd = 20.25
 Nexio::PaymentGateway.charge(amount_in_usd,card_token)
 ```
 
+**Way to refund**
+```
+@refund = Nexio::PaymentGateway.refund(@nexio_payment_id,1.20)
+```
+You can use card `5105105105105100` to charge and refund for testing purpose as it settles payment immediately.
+
 **Handling error**
 ```
 begin
