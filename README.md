@@ -114,6 +114,15 @@ rescue Nexio::NexioError => e
 end
 ```
 
+**Getting http request details including body parameters and header information**
+```
+begin
+  Nexio::PaymentGateway.charge(10.60,'invalid_card_token')
+rescue Nexio::NexioError => e
+  puts e.request_details_in_hash
+end
+```
+
 ## Testing
 `bundle exec rake test`
 
