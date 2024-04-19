@@ -94,7 +94,8 @@ Nexio::PaymentGateway.card_token(card_token)
 ```
 
 **Charging a card through it's token**
-It is highly recommended to pass order number and customer reference on charging a credit card.
+#####It is highly recommended to pass order number and customer reference on charging a credit card.
+
 ```
 customer = {
   "orderNumber" => 4848,
