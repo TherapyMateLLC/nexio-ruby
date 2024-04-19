@@ -95,9 +95,14 @@ Nexio::PaymentGateway.card_token(card_token)
 
 **Charging a card through it's token**
 ```
+customer = {
+  "orderNumber" => 4848,
+  "customerRef" => 123
+}
 amount_in_usd = 20.25
-Nexio::PaymentGateway.charge(amount_in_usd,card_token)
+Nexio::PaymentGateway.charge(amount_in_usd,card_token, customer)
 ```
+It is highly recommended to pass order number and customer reference on charging a credit card.
 
 **Way to refund**
 ```
