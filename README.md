@@ -130,7 +130,8 @@ rescue Nexio::NexioError => e
 end
 ```
 
-***How to use custom css***
+**How to use custom css**
+
 This is very easy to style payment form by passing css file in `uiOptions` as below:
 ```
 @nexio_one_time_token = Nexio::PaymentGateway.create_one_time_token(
