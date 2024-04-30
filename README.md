@@ -145,9 +145,9 @@ This is very easy to style payment form by passing css file in `uiOptions` as be
       "customer" => {}
     }})["token"]
 ```
-Sample CSS: Nexio payment form has a wrapper with #paymentForm element, so you can apply more
+Sample CSS: Nexio payment form has a wrapper with `#paymentForm` element, so you can apply more
 css considering it as parent. Just inspect the Nexio payment form to get their DOM structure in order
-to apply styles. Example:
+to apply styles. SCSS Example:
 ```
 #paymentForm{
   width: 500px;
