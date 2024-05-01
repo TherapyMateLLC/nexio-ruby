@@ -159,6 +159,14 @@ module Nexio
       response_or_raise_error(response)
     end
 
+    def self.payment_status(nexio_payment_id)
+      url = URI("#{Nexio.configuration.api_server_url}/transaction/v3/paymentId/#{nexio_payment_id}")
+      @request = Net::HTTP::Get.new(url)
+      http, request = configure_https_request(url, @request)
+      response = http.request(request)
+      response_or_raise_error(response)
+    end
+
     # https configuration using base64 basic auth code
     def self.configure_https_request(url, request)
       http = Net::HTTP.new(url.host, url.port)

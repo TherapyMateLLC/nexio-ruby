@@ -138,7 +138,7 @@ This is very easy to style payment form by passing css file in `uiOptions` as be
       {
         "card" => {},
         "uiOptions" => {
-          "css" => view_context.asset_url('nexio/card')
+          "css" => ActionController::Base.helpers.asset_path('your_custom.css', host: Rails.application.secrets.asset_host ? Rails.application.secrets.asset_host : request.base_url)
         },
       "data" => {
       "currency" => "USD",
