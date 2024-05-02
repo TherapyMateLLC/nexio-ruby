@@ -112,6 +112,14 @@ Nexio::PaymentGateway.charge(amount_in_usd,card_token, customer)
 ```
 You can use card `5105105105105100` to charge and refund for testing purpose as it settles payment immediately.
 
+**Get Payment Status**
+Before refunding, it is needed to know the payment status Settled. Please visit 
+https://docs.nexiopay.com/docs/constant-transaction-values#transaction-status-transactionstatus
+to know the different payment status
+```
+@payment_status = Nexio::PaymentGateway.payment_status(@nexio_payment_id)
+```
+
 **Handling error**
 ```
 begin
