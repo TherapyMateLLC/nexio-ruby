@@ -118,9 +118,60 @@ class TestNexio < Minitest::Test
     end
   end
 
+  def test_void_payment
+    VCR.use_cassette('save_credit_card2') do
+      @nexio_one_time_token = create_one_time_token2
+      @card = Nexio::PaymentGateway.save_card(
+        {
+          "card" => {
+            "cardHolderName" => "Abdul Barek",
+            "expirationMonth" => "10",
+            "expirationYear" => "#{Date.today.year + 10}",
+            # follow this for generating encrypted card number https://jsfiddle.net/nexiopaydev/qkwautgb/30/
+            # original card number is 4111111111111111
+            # The amount is settled immediately for this card.
+            "encryptedNumber" => "kYVzcxbW9ZBNpOKHsCfuzRfnJyzMGKEOlie432p8U5I96gDNUCDKcZu7B7kVp5fOjSywllZ/78io55tFF9/CIevrcE6MCEV9x/jWr5MqcUw8ohf3H5unB0n3UjwTJTYBltWTl2el1DxG1+iY3Ucxubxk+DWE2CCBMAMDgNXj9Ib+EMqUWQrXSFQK//pqSbm8GUG6twckIEHt1RSH7MDhqLO6s+dPvW8j2BNTbvarQcRkiOkz5DkKIZHF+KRkdoea/VHjG7QDO2YLcCcEvgWAL3OCjrKXCY0jTJyPEafD+rFCFqOzNwtAgn4qFfzzRkahIDtXaS6eIVeoNZfZ117qUg=="
+          },
+          "data" => {
+            "currency" => "USD"
+          },
+          "shouldUpdateCard" => true,
+          "token" => @nexio_one_time_token
+        }
+      )
+    end
+    VCR.use_cassette('charge_credit_card2') do
+      @charge = Nexio::PaymentGateway.charge(20.49,@card["token"]["token"],{})
+      @payment_id = @charge["id"]
+    end
+    VCR.use_cassette('void_payment') do
+      @payment = Nexio::PaymentGateway.void_payment(@payment_id)
+      assert_equal 'voided', @payment["transactionStatus"].to_s
+    end
+  end
+
   private
   def create_one_time_token
     VCR.use_cassette('one_time_token') do
+      @nexio_one_time_token = Nexio::PaymentGateway.create_one_time_token(
+        {
+          "data" => {
+            "currency" => "USD",
+            "customer" => {
+              "customerRef" => 48,
+              "billToAddressOne" => "Main Stret",
+              "billToAddressTwo" => "",
+              "billToCity" => "Utah",
+              "billToState" => "UT",
+              "billToPostal" => "80724",
+            }
+          }})["token"]
+    end
+    @nexio_one_time_token
+  end
+
+  def create_one_time_token2
+    VCR.use_cassette('one_time_token2') do
       @nexio_one_time_token = Nexio::PaymentGateway.create_one_time_token(
         {
           "data" => {

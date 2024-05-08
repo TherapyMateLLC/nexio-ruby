@@ -167,6 +167,17 @@ module Nexio
       response_or_raise_error(response)
     end
 
+    def self.void_payment(nexio_payment_id)
+      url = URI("#{Nexio.configuration.api_server_url}/pay/v3/void")
+      @request = Net::HTTP::Post.new(url)
+      http, request = configure_https_request(url, @request)
+      request.body = {
+        "id" => nexio_payment_id
+      }.to_json
+      response = http.request(request)
+      response_or_raise_error(response)
+    end
+
     # https configuration using base64 basic auth code
     def self.configure_https_request(url, request)
       http = Net::HTTP.new(url.host, url.port)
