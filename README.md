@@ -120,6 +120,11 @@ to know the different payment status
 @payment_status = Nexio::PaymentGateway.payment_status(@nexio_payment_id)
 ```
 
+**Voiding a payment**
+```
+@payment_status = Nexio::PaymentGateway.void_payment(@nexio_payment_id)
+```
+
 **Handling error**
 ```
 begin
