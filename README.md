@@ -102,6 +102,8 @@ mandatory to pass paymentType. For one time payment pass one of the following ba
 3. merchant initiated using saved card: `unscheduledMit`
 4. client initiated using saved card: `unscheduledCit`
 
+Please check this for more information https://docs.nexiopay.com/docs/constant-transaction-values#payment-type-paymenttype
+
 ```
 customer = {
   "orderNumber" => 4848,
@@ -136,7 +138,7 @@ to know the different payment status
 **Handling error**
 ```
 begin
-  Nexio::PaymentGateway.charge(10.60,'invalid_card_token')
+  Nexio::PaymentGateway.charge(10.60,'invalid_card_token',{},{})
 rescue Nexio::NexioError => e
   puts e.to_hash
 end
@@ -145,7 +147,7 @@ end
 **Getting http request details including body parameters and header information**
 ```
 begin
-  Nexio::PaymentGateway.charge(10.60,'invalid_card_token')
+  Nexio::PaymentGateway.charge(10.60,'invalid_card_token',{},{})
 rescue Nexio::NexioError => e
   puts e.request_details_in_hash
 end
