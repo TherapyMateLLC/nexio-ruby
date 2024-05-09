@@ -95,15 +95,23 @@ Nexio::PaymentGateway.card_token(card_token)
 
 **Charging a card through it's token**
 
-It is highly recommended to pass order number and customer reference on charging a credit card.
+It is highly recommended to pass order number and customer reference on charging a credit card. Also it is 
+mandatory to pass paymentType. For one time payment pass one of the following based on your scenario:
+1. merchant initiated using new card: `initialMoto`
+2. client initiated using new card: `initialUnscheduled`
+3. merchant initiated using saved card: `unscheduledMit`
+4. client initiated using saved card: `unscheduledCit`
 
 ```
 customer = {
   "orderNumber" => 4848,
   "customerRef" => 123
 }
+processingOptions = {
+  "paymentType" => 'initialMoto'
+}
 amount_in_usd = 20.25
-Nexio::PaymentGateway.charge(amount_in_usd,card_token, customer)
+Nexio::PaymentGateway.charge(amount_in_usd,card_token, customer, processingOptions)
 ```
 
 **Way to refund**

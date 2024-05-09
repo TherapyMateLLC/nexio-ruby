@@ -117,25 +117,29 @@ module Nexio
     end
 
     # Makes a charge of a given card using the associated card token
-    def self.charge(amount=0, card_token, customer)
+    def self.charge(amount=0, card_token, customer, processingOptions)
+      processingOptions = {} if processingOptions.blank?
       url = URI("#{Nexio.configuration.api_server_url}/pay/v3/process")
       @request = Net::HTTP::Post.new(url)
       http, request = configure_https_request(url, @request)
       request.body = {
         "data" => {
           "currency" => "USD", "amount" => amount,
-          "customerRef" => customer["customerRef"],
-          "orderNumber" => customer["orderNumber"],
+          "customer" => {
+            "customerRef" => customer["customerRef"],
+            "orderNumber" => customer["orderNumber"],
+          },
         },
         "tokenex" => {"token" => card_token},
         "processingOptions" =>
           {
+            "paymentType" => processingOptions["paymentType"],
             "retryOnSoftDecline" => false,
             "checkFraud" => true,
             "shouldUseFingerprint" => true,
             "check3ds" => false,
             "verboseResponse" => false
-          },
+          }.merge(processingOptions),
         "shouldUpdateCard" => true,
         "isAuthOnly" => false,
         "paymentMethod" => "card"
