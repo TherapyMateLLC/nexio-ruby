@@ -118,7 +118,7 @@ module Nexio
 
     # Makes a charge of a given card using the associated card token
     def self.charge(amount=0, card_token, customer, processingOptions)
-      processingOptions = {} if processingOptions.blank?
+      processingOptions = {} if defined?(processingOptions) || processingOptions.blank?
       url = URI("#{Nexio.configuration.api_server_url}/pay/v3/process")
       @request = Net::HTTP::Post.new(url)
       http, request = configure_https_request(url, @request)

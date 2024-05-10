@@ -44,7 +44,9 @@ class TestNexio < Minitest::Test
     end
 
     VCR.use_cassette('charge_credit_card') do
-      @charge = Nexio::PaymentGateway.charge(20.49,@card["token"]["token"],{})
+      customer = get_customer
+      processingOptions = get_processing_options
+      @charge = Nexio::PaymentGateway.charge(20.49,@card["token"]["token"],customer, processingOptions)
     end
     refute_nil @charge["authCode"]
     assert_equal 20.49, @charge["amount"].to_f
@@ -74,7 +76,9 @@ class TestNexio < Minitest::Test
     end
 
     VCR.use_cassette('charge_credit_card') do
-      @charge = Nexio::PaymentGateway.charge(20.49,@card["token"]["token"],{})
+      customer = get_customer
+      processingOptions = get_processing_options
+      @charge = Nexio::PaymentGateway.charge(20.49,@card["token"]["token"],customer, processingOptions)
       @payment_id = @charge["id"]
     end
     VCR.use_cassette('refund') do
@@ -108,7 +112,9 @@ class TestNexio < Minitest::Test
       )
     end
     VCR.use_cassette('charge_credit_card') do
-      @charge = Nexio::PaymentGateway.charge(20.49,@card["token"]["token"],{})
+      customer = get_customer
+      processingOptions = get_processing_options
+      @charge = Nexio::PaymentGateway.charge(20.49,@card["token"]["token"],customer, processingOptions)
       @payment_id = @charge["id"]
     end
     VCR.use_cassette('payment_status') do
@@ -141,7 +147,9 @@ class TestNexio < Minitest::Test
       )
     end
     VCR.use_cassette('charge_credit_card2') do
-      @charge = Nexio::PaymentGateway.charge(20.49,@card["token"]["token"],{})
+      customer = get_customer
+      processingOptions = get_processing_options
+      @charge = Nexio::PaymentGateway.charge(20.49,@card["token"]["token"],customer, processingOptions)
       @payment_id = @charge["id"]
     end
     VCR.use_cassette('void_payment') do
@@ -158,7 +166,7 @@ class TestNexio < Minitest::Test
           "data" => {
             "currency" => "USD",
             "customer" => {
-              "customerRef" => 48,
+              "customerRef" => get_customer["customerRef"],
               "billToAddressOne" => "Main Stret",
               "billToAddressTwo" => "",
               "billToCity" => "Utah",
@@ -177,9 +185,11 @@ class TestNexio < Minitest::Test
           "data" => {
             "currency" => "USD",
             "customer" => {
-              "customerRef" => 48,
-              "billToAddressOne" => "Main Stret",
-              "billToAddressTwo" => "",
+              "customerRef" => get_customer["customerRef"],
+              "firstName" => "TestAbdul",
+              "lastName" => "TestBarek",
+              "billToAddressOne" => "Main Street",
+              "billToAddressTwo" => "Dhaka",
               "billToCity" => "Utah",
               "billToState" => "UT",
               "billToPostal" => "80724",
@@ -187,6 +197,19 @@ class TestNexio < Minitest::Test
           }})["token"]
     end
     @nexio_one_time_token
+  end
+
+  def get_customer
+    {
+      "customerRef" => 48,
+      "orderNumber" => (Time.now.to_f * 1000).to_i,
+    }
+  end
+
+  def get_processing_options
+    {
+      "paymentType" => "unscheduledCit" # one time payment, client initiated and used saved card
+    }
   end
 
 end
