@@ -41,6 +41,25 @@ Setting `config.environment` to `development` will use sandbox, otherwise it wil
 }})["token"]
 ```
 
+**Saving a credit card**
+```
+@card = Nexio::PaymentGateway.save_card(
+    {
+      "card" => {
+        "cardHolderName" => "Abdul Barek",
+        "expirationMonth" => "10",
+        "expirationYear" => "#{Date.today.year + 10}",
+        "encryptedNumber" => "JQ2DIwFqQOCypsOE+3n0Mx6W6das1LrFAQVFR1lBD9KySCbVQXvJoweQ7R3wCv34oK6d8QlYQgsAWpmcROiwe4LowQI3pLfADmGRg4arowdaW8UBcR3gm26tT7KUdG13Y+0aiTKSleSJiRUSm3yU/VrNMe1tblYG+SsmtC8c3PEZkQxkJ216RYCzBkFRku2O7TRvx/GtxGd4VQItIF567VanRmZ8tIUaZGg9ZN6PKzUifRfCCt+2XGY7I1+Z7EOEAX1gQZT86+2vzcdk8MiZtMS4KYs+4kngSxR2EhyJa+3wRQBmkApRt03qCoWJEPIbNYxgwdjapy2oWeI/DrZu6A=="
+      },
+      "data" => {
+        "currency" => "USD"
+      },
+      "shouldUpdateCard" => true,
+      "token" => <ONE_TIME_TOKEN>
+    }
+  )
+```
+
 **Update a card**
 ```
  data = {
@@ -74,25 +93,6 @@ Nexio::PaymentGateway.delete_card([card_token1, card_token2])
 Nexio::PaymentGateway.card_token(card_token)
 ```
 
-**Saving a credit card**
-```
-@card = Nexio::PaymentGateway.save_card(
-    {
-      "card" => {
-        "cardHolderName" => "Abdul Barek",
-        "expirationMonth" => "10",
-        "expirationYear" => "#{Date.today.year + 10}",
-        "encryptedNumber" => "JQ2DIwFqQOCypsOE+3n0Mx6W6das1LrFAQVFR1lBD9KySCbVQXvJoweQ7R3wCv34oK6d8QlYQgsAWpmcROiwe4LowQI3pLfADmGRg4arowdaW8UBcR3gm26tT7KUdG13Y+0aiTKSleSJiRUSm3yU/VrNMe1tblYG+SsmtC8c3PEZkQxkJ216RYCzBkFRku2O7TRvx/GtxGd4VQItIF567VanRmZ8tIUaZGg9ZN6PKzUifRfCCt+2XGY7I1+Z7EOEAX1gQZT86+2vzcdk8MiZtMS4KYs+4kngSxR2EhyJa+3wRQBmkApRt03qCoWJEPIbNYxgwdjapy2oWeI/DrZu6A=="
-      },
-      "data" => {
-        "currency" => "USD"
-      },
-      "shouldUpdateCard" => true,
-      "token" => <ONE_TIME_TOKEN>
-    }
-  )
-```
-
 **Charging a card through it's token**
 
 It is highly recommended to pass order number and customer reference on charging a credit card. Also it is 
@@ -116,7 +116,7 @@ amount_in_usd = 20.25
 Nexio::PaymentGateway.charge(amount_in_usd,card_token, customer, processingOptions)
 ```
 
-**Way to refund**
+**How to refund**
 ```
 @refund = Nexio::PaymentGateway.refund(@nexio_payment_id,1.20)
 ```
@@ -130,7 +130,7 @@ to know the different payment status
 @payment_status = Nexio::PaymentGateway.payment_status(@nexio_payment_id)
 ```
 
-**Voiding a payment**
+**How to void a payment**
 ```
 @payment_status = Nexio::PaymentGateway.void_payment(@nexio_payment_id)
 ```
@@ -138,7 +138,7 @@ to know the different payment status
 **Handling error**
 ```
 begin
-  Nexio::PaymentGateway.charge(10.60,'invalid_card_token',{},{})
+  Nexio::PaymentGateway.charge(10.60,'invalid_card_token',customer,processingOptions)
 rescue Nexio::NexioError => e
   puts e.to_hash
 end
@@ -147,7 +147,7 @@ end
 **Getting http request details including body parameters and header information**
 ```
 begin
-  Nexio::PaymentGateway.charge(10.60,'invalid_card_token',{},{})
+  Nexio::PaymentGateway.charge(10.60,'invalid_card_token',customer,processingOptions)
 rescue Nexio::NexioError => e
   puts e.request_details_in_hash
 end
