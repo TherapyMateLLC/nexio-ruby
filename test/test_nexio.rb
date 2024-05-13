@@ -118,6 +118,7 @@ class TestNexio < Minitest::Test
       @payment_id = @charge["id"]
     end
     VCR.use_cassette('payment_status') do
+      sleep 2
       @payment_status = Nexio::PaymentGateway.payment_status(@payment_id)
       refute_nil @payment_status["transactionStatus"]
       assert_equal 20, @payment_status["transactionStatus"]
