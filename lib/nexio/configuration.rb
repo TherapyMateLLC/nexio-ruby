@@ -16,7 +16,9 @@ module Nexio
     end
 
     def api_key!
-      api_key || raise(NexioError, "No api key specified.")
+      raise MissingApiKey if api_key.nil? || api_key.empty?
+
+      api_key
     end
 
     def api_server_url

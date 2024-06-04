@@ -23,6 +23,13 @@ module Nexio
     end
   end
 
+  class MissingApiKey < StandardError
+    def initialize(msg = "No api key configured", exception_type = "missing_api_key")
+      @exception_type = exception_type
+      super(msg)
+    end
+  end
+
   def self.configuration
     @configuration ||= Configuration.new
   end
