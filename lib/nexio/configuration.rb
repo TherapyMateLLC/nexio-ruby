@@ -16,7 +16,7 @@ module Nexio
     end
 
     def api_key!
-      raise MissingApiKey if api_key.blank?
+      raise MissingApiKey if api_key.nil? || api_key.empty?
 
       api_key
     end
