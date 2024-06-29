@@ -20,6 +20,10 @@ If bundler is not being used to manage dependencies, install the gem by executin
   end
 ```
 Setting `config.environment` to `development` will use sandbox, otherwise it will use live Nexio API.
+If you get Nexio API username and password, you can generate Nexio API key as follows:
+```
+ nexio_api_key = Base64.urlsafe_encode64("#{nexio_username}:#{nexio_password}", padding: false)
+```
 
 **Creating One Time Token**
 ```
